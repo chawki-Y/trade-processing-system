@@ -1,5 +1,5 @@
 node_modules/
 .env
-npm-debug.log*
+*.log
 PROJECT_WALKTHROUGH.md
 CODE_EXPLANATION.md

@@ -267,5 +267,14 @@
     </div>
 
     <script src="/app.js"></script>
+    <script src="/trade-ops-copilot.js"></script>
+    <script>
+      window.TradeOpsCopilot?.init({
+        apiBaseUrl: "http://127.0.0.1:8000",
+        title: "Trade Ops Copilot",
+        subtitle: "Middle-office assistant",
+        buttonLabel: "Ask Copilot"
+      });
+    </script>
   </body>
 </html>
