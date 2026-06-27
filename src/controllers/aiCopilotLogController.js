@@ -10,7 +10,11 @@ async function postAiCopilotLog(req, res) {
     answer,
     data_source_endpoint: dataSourceEndpoint,
     row_count: rowCount,
-    error
+    error,
+    success,
+    response_time_ms: responseTimeMs,
+    model,
+    tokens_used: tokensUsed
   } = req.body;
 
   if (!question || typeof question !== "string" || !question.trim()) {
@@ -21,6 +25,30 @@ async function postAiCopilotLog(req, res) {
     return res.status(400).json({ message: "row_count must be a non-negative integer" });
   }
 
+  if (success !== undefined && typeof success !== "boolean") {
+    return res.status(400).json({ message: "success must be a boolean" });
+  }
+
+  if (
+    responseTimeMs !== undefined &&
+    responseTimeMs !== null &&
+    (!Number.isInteger(responseTimeMs) || responseTimeMs < 0)
+  ) {
+    return res.status(400).json({
+      message: "response_time_ms must be a non-negative integer"
+    });
+  }
+
+  if (
+    tokensUsed !== undefined &&
+    tokensUsed !== null &&
+    (!Number.isInteger(tokensUsed) || tokensUsed < 0)
+  ) {
+    return res.status(400).json({
+      message: "tokens_used must be a non-negative integer"
+    });
+  }
+
   try {
     const log = await createAiCopilotLog({
       question: question.trim(),
@@ -28,7 +56,11 @@ async function postAiCopilotLog(req, res) {
       answer,
       dataSourceEndpoint,
       rowCount,
-      error
+      error,
+      success,
+      responseTimeMs,
+      model,
+      tokensUsed
     });
     return res.status(201).json(log);
   } catch (serviceError) {

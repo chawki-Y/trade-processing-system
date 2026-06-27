@@ -73,8 +73,24 @@ CREATE TABLE IF NOT EXISTS ai_copilot_logs (
     data_source_endpoint VARCHAR(255),
     row_count INTEGER DEFAULT 0,
     error TEXT NULL,
+    success BOOLEAN NOT NULL DEFAULT TRUE,
+    response_time_ms INTEGER,
+    model VARCHAR(100),
+    tokens_used INTEGER NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+ALTER TABLE ai_copilot_logs
+ADD COLUMN IF NOT EXISTS success BOOLEAN NOT NULL DEFAULT TRUE;
+
+ALTER TABLE ai_copilot_logs
+ADD COLUMN IF NOT EXISTS response_time_ms INTEGER;
+
+ALTER TABLE ai_copilot_logs
+ADD COLUMN IF NOT EXISTS model VARCHAR(100);
+
+ALTER TABLE ai_copilot_logs
+ADD COLUMN IF NOT EXISTS tokens_used INTEGER NULL;
 
 ALTER TABLE trades
 ADD COLUMN IF NOT EXISTS last_price_updated_at TIMESTAMP NULL;

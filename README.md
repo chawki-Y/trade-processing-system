@@ -196,7 +196,9 @@ Returns a simple health-check response confirming the API is running.
 ### POST `/api/ai-copilot/logs`
 
 Stores an AI Copilot interaction with its question, intent, answer, source API endpoint, row count,
-and optional error. The FastAPI copilot calls this endpoint after each embedded `/agent/ask` request.
+success status, response time, optional model/token usage, and error. The FastAPI copilot calls this
+endpoint after each embedded `/agent/ask` request. These fields support future latency, usage,
+intent-frequency, token-consumption, and success-rate dashboards.
 
 ### GET `/api/ai-copilot/logs`
 

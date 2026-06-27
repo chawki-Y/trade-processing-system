@@ -9,9 +9,13 @@ async function createAiCopilotLog(log) {
         answer,
         data_source_endpoint,
         row_count,
-        error
+        error,
+        success,
+        response_time_ms,
+        model,
+        tokens_used
       )
-      VALUES ($1, $2, $3, $4, $5, $6)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
       RETURNING
         id,
         question,
@@ -20,6 +24,10 @@ async function createAiCopilotLog(log) {
         data_source_endpoint AS "dataSourceEndpoint",
         row_count AS "rowCount",
         error,
+        success,
+        response_time_ms AS "responseTimeMs",
+        model,
+        tokens_used AS "tokensUsed",
         created_at AS "createdAt"
     `,
     [
@@ -28,7 +36,11 @@ async function createAiCopilotLog(log) {
       log.answer || null,
       log.dataSourceEndpoint || null,
       log.rowCount || 0,
-      log.error || null
+      log.error || null,
+      log.success !== false,
+      log.responseTimeMs ?? null,
+      log.model || null,
+      log.tokensUsed ?? null
     ]
   );
 
@@ -46,6 +58,10 @@ async function getAiCopilotLogs(limit = 50) {
         data_source_endpoint AS "dataSourceEndpoint",
         row_count AS "rowCount",
         error,
+        success,
+        response_time_ms AS "responseTimeMs",
+        model,
+        tokens_used AS "tokensUsed",
         created_at AS "createdAt"
       FROM ai_copilot_logs
       ORDER BY created_at DESC
